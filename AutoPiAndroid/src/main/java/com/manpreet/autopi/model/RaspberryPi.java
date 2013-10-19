@@ -1,12 +1,12 @@
 package com.manpreet.autopi.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class RaspberryPi {
 
     public int id;
     public String label;
-    public List<Light> lights;
+    public ArrayList<Light> lights;
     public String resource_uri;
     public String user;
     public String uuid;

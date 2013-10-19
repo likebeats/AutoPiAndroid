@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AutoPiAndroid/AutoPiAndroid.iml" filepath="$PROJECT_DIR$/AutoPiAndroid/AutoPiAndroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AutoPiAndroidProject.iml" filepath="$PROJECT_DIR$/AutoPiAndroidProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AutoPiAndroid/AutoPiAndroid-AutoPiAndroid.iml" filepath="$PROJECT_DIR$/AutoPiAndroid/AutoPiAndroid-AutoPiAndroid.iml" />
     </modules>
   </component>
 </project>

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.manpreet.autopi.model.User;
 import com.manpreet.autopi.store.UserStore;
 
 public class LoginActivity extends Activity {
@@ -83,15 +84,16 @@ public class LoginActivity extends Activity {
                 });
     }
 
-    public void onTaskComplete(String result) {
+    public void onTaskComplete(User user) {
 
-        if (result != null) {
+        if (user != null) {
 
             Session session = Session.getInstance();
             session.username = username;
             session.password = password;
+            session.currentUser = user;
 
-            Log.d("Result: ", result);
+            //Log.d("Result: ", result);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -106,15 +108,15 @@ public class LoginActivity extends Activity {
 
     }
 
-    private class PerformGetAllUsersTask extends AsyncTask<String, Void, String> {
+    private class PerformGetAllUsersTask extends AsyncTask<String, Void, User> {
 
         @Override
-        protected String doInBackground(String... params) {
-            return UserStore.getAllUsers(params[0], params[1]);
+        protected User doInBackground(String... params) {
+            return UserStore.getCurrentUser(params[0], params[1]);
         }
 
         @Override
-        protected void onPostExecute(final String result) {
+        protected void onPostExecute(final User result) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

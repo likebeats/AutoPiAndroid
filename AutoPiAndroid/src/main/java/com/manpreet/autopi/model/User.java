@@ -1,6 +1,6 @@
 package com.manpreet.autopi.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class User {
 
@@ -12,9 +12,9 @@ public class User {
     public Boolean is_staff;
     public Boolean is_superuser;
     public String last_login;
-    public List<Light> lights;
+    public ArrayList<Light> lights;
     public String password;
-    public List<RaspberryPi> raspberry_pi;
+    public ArrayList<RaspberryPi> raspberry_pi;
     public String resource_uri;
     public String username;
 
