@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,10 +21,11 @@ public class LoginActivity extends Activity {
     private View mLoginStatusView;
     private EditText usernameTextView;
     private EditText passwordTextView;
+    private Button loginBtn;
+    private Toast toast;
 
     private String username;
     private String password;
-    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,11 @@ public class LoginActivity extends Activity {
         mLoginFormView = findViewById(R.id.login_form);
         mLoginStatusView = findViewById(R.id.login_status);
 
-        Button loginBtn = (Button)findViewById(R.id.sign_in_button);
+        loginBtn = (Button)findViewById(R.id.sign_in_button);
         usernameTextView = (EditText)findViewById(R.id.username);
         passwordTextView = (EditText)findViewById(R.id.password);
 
-        loginBtn.setOnClickListener(new Button.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -61,6 +61,7 @@ public class LoginActivity extends Activity {
     private void showProgress(final boolean show) {
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+        loginBtn.setClickable(!show);
         mLoginStatusView.setVisibility(View.VISIBLE);
         mLoginStatusView.animate()
                 .setDuration(shortAnimTime)
@@ -88,17 +89,20 @@ public class LoginActivity extends Activity {
 
         if (user != null) {
 
+            /** Login Successful */
+
             Session session = Session.getInstance();
             session.username = username;
             session.password = password;
             session.currentUser = user;
 
-            //Log.d("Result: ", result);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
 
         } else {
+
+            /** Login Failed */
 
             showProgress(false);
             Context context = getApplicationContext();
@@ -108,6 +112,9 @@ public class LoginActivity extends Activity {
 
     }
 
+    /**
+     * Check login credentials in background task
+     */
     private class PerformGetAllUsersTask extends AsyncTask<String, Void, User> {
 
         @Override

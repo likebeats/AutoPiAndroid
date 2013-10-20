@@ -24,5 +24,5 @@ android {
 
 dependencies {
 	compile 'com.android.support:appcompat-v7:18.0.0'
-    compile files('libs/gson-2.0.jar', 'libs/retrofit-1.2.2.jar')
+    compile files('libs/gson-2.0.jar', 'libs/retrofit-1.2.2.jar', 'libs/android-async-http-1.4.3.jar')
 }
