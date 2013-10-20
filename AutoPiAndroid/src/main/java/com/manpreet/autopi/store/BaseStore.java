@@ -1,36 +1,15 @@
 package com.manpreet.autopi.store;
 
-import android.util.Base64;
-
-import com.manpreet.autopi.Session;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
 
 public class BaseStore {
 
@@ -89,25 +68,52 @@ public class BaseStore {
 
             System.out.println("PARAMS: "+params.toString());
             System.out.println("Basic " + authStringEnc);
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPut postRequest = new HttpPut(API_URL+query);
-            postRequest.setHeader("Authorization", "Basic " + authStringEnc);
-            StringEntity input = new StringEntity(params.toString());
+
+            URL url = new URL(API_URL+query);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(method);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+            OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
+            osw.write(String.format(params.toString()));
+            osw.flush();
+            osw.close();
+            System.err.println("RESPONSE: "+connection.getResponseCode());
+
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+
+            int numCharsRead;
+            char[] charArray = new char[1024];
+            StringBuilder sb = new StringBuilder();
+            while ((numCharsRead = isr.read(charArray)) > 0) {
+                sb.append(charArray, 0, numCharsRead);
+            }
+            System.err.println(sb.toString());
+
+            /*HttpPut postRequest = new HttpPut(API_URL+query);
+            //postRequest.setHeader("Accept", "application/json");
+            StringEntity input = new StringEntity(params.toString(), HTTP.UTF_8);
             input.setContentType("application/json");
+            postRequest.setHeader("Content-Type", "application/json;charset=UTF-8");
+            postRequest.setHeader("Authorization", "Basic " + authStringEnc);
             postRequest.setEntity(input);
 
-            HttpResponse response = httpClient.execute(postRequest);
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            BasicHttpResponse response = (BasicHttpResponse)httpClient.execute(postRequest);
 
             HttpEntity entity = response.getEntity();
             String responseString = EntityUtils.toString(entity);
 
             System.out.println("RESPONSE: "+responseString);
             System.out.println("STATUS: "+response.getStatusLine().toString());
-            httpClient.getConnectionManager().shutdown();
+            httpClient.getConnectionManager().shutdown();*/
 
             System.out.println("*** END CALLING API: "+API_URL+query+" ***");
 
-            return responseString;
+            return null;
 
         } catch (MalformedURLException e) {
 
@@ -203,27 +209,5 @@ public class BaseStore {
         }
 
         return null;*/
-    }
-
-    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
-    {
-        if (params == null) return null;
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        for (NameValuePair pair : params)
-        {
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
-        }
-
-        return result.toString();
     }
 }

@@ -5,7 +5,6 @@ import android.util.Base64;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -13,9 +12,6 @@ import com.google.gson.reflect.TypeToken;
 import com.manpreet.autopi.Session;
 import com.manpreet.autopi.model.User;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,19 +50,11 @@ public class UserStore extends BaseStore {
 
     }
 
-    public static String setLightStatus(int lightId, String status) {
+    public static String setLightStatus(int lightId, boolean status) {
 
         try {
             JSONObject params = new JSONObject();
-            params.put("id", "1");
-            params.put("gpio", "1");
-            params.put("status", "true");
-            params.put("user", "/api/v1/user/1/");
-            params.put("resource_uri", "/api/v1/light/1/");
-            params.put("raspberry_pi", "/api/v1/raspberry_pi/1/");
-            params.put("label", "Foyer");
-            params.put("last_updated", "2013-10-20T00:38:52.447854");
-            params.put("component", "light");
+            params.put("status", status);
             return api("/light/"+lightId+"/?format=json", "PUT", params, Session.getInstance().authString);
         } catch (JSONException e) {
             System.out.println(e);

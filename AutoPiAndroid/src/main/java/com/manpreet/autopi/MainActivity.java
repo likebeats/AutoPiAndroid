@@ -76,7 +76,8 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(String... params) {
             int id = Integer.parseInt(params[0]);
-            return UserStore.setLightStatus(id, params[1]);
+            boolean status = Boolean.valueOf(params[1]);
+            return UserStore.setLightStatus(id, status);
         }
 
         @Override
