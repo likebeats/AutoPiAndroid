@@ -4,8 +4,19 @@ import android.util.Base64;
 
 import com.manpreet.autopi.Session;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,6 +26,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -69,9 +81,49 @@ public class BaseStore {
         return null;
     }
 
-    protected static String api(String query, String method, List<NameValuePair> params, String authStringEnc) {
+    protected static String api(String query, String method, JSONObject params, String authStringEnc) {
 
-        Session session = Session.getInstance();
+        try {
+
+            System.out.println("*** BEGIN CALLING API: "+API_URL+query+" ***");
+
+            System.out.println("PARAMS: "+params.toString());
+            System.out.println("Basic " + authStringEnc);
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPut postRequest = new HttpPut(API_URL+query);
+            postRequest.setHeader("Authorization", "Basic " + authStringEnc);
+            StringEntity input = new StringEntity(params.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            HttpEntity entity = response.getEntity();
+            String responseString = EntityUtils.toString(entity);
+
+            System.out.println("RESPONSE: "+responseString);
+            System.out.println("STATUS: "+response.getStatusLine().toString());
+            httpClient.getConnectionManager().shutdown();
+
+            System.out.println("*** END CALLING API: "+API_URL+query+" ***");
+
+            return responseString;
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+        /*Session session = Session.getInstance();
         if (authStringEnc == null) authStringEnc = session.authString;
 
         HttpURLConnection connection = null;
@@ -79,10 +131,10 @@ public class BaseStore {
 
             System.out.println("*** BEGIN CALLING API: "+API_URL+query+" ***");
 
-            /*String authString = username + ":" + password;
+            String authString = username + ":" + password;
             System.out.println("auth string: " + authString);
             byte[] authEncBytes = Base64.encode(authString.getBytes(), Base64.DEFAULT);
-            String authStringEnc = new String(authEncBytes);*/
+            String authStringEnc = new String(authEncBytes);
             System.out.println("Base64 encoded auth string: " + authStringEnc);
 
             String urlParameters = getQuery(params);
@@ -150,7 +202,7 @@ public class BaseStore {
             e.printStackTrace();
         }
 
-        return null;
+        return null;*/
     }
 
     private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException

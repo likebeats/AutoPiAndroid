@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <output url="file://$MODULE_DIR$/build/classes/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/..">
       <excludeFolder url="file://$MODULE_DIR$/../.gradle" />
@@ -13,7 +12,6 @@
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.0" level="project" />
-    <orderEntry type="library" exported="" name="android-async-http-1.4.3" level="project" />
   </component>
 </module>
 

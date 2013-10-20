@@ -15,6 +15,9 @@ import com.manpreet.autopi.model.User;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserStore extends BaseStore {
 
@@ -53,13 +56,22 @@ public class UserStore extends BaseStore {
 
     public static String setLightStatus(int lightId, String status) {
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("status", status));
-        params.add(new BasicNameValuePair("user", "/api/v1/user/1/"));
-        params.add(new BasicNameValuePair("resource_uri", "/api/v1/light/1/"));
-        String response = api("/light/"+lightId+"?format=json", "POST", params, null);
-
-        return response;
+        try {
+            JSONObject params = new JSONObject();
+            params.put("id", "1");
+            params.put("gpio", "1");
+            params.put("status", "true");
+            params.put("user", "/api/v1/user/1/");
+            params.put("resource_uri", "/api/v1/light/1/");
+            params.put("raspberry_pi", "/api/v1/raspberry_pi/1/");
+            params.put("label", "Foyer");
+            params.put("last_updated", "2013-10-20T00:38:52.447854");
+            params.put("component", "light");
+            return api("/light/"+lightId+"/?format=json", "PUT", params, Session.getInstance().authString);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
 }

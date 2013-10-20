@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println(result);
+                    System.out.println("RESULT:" +result);
                 }
             });
         }
