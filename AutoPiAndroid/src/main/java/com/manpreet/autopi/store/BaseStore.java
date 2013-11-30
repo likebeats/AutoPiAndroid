@@ -13,9 +13,10 @@ import java.net.URL;
 
 public class BaseStore {
 
-    protected static final String API_URL = "http://autopi.herokuapp.com/api/v1";
+    //protected static final String API_URL = "http://autopi.herokuapp.com/api/v1";
+    public static final String API_URL = "http://192.168.1.120:8000/api/v1";
 
-    protected static String getApi(String query, String authStringEnc) {
+    public static String getApi(String query, String authStringEnc) {
         HttpURLConnection urlConnection = null;
         try {
 
@@ -60,7 +61,7 @@ public class BaseStore {
         return null;
     }
 
-    protected static String api(String query, String method, JSONObject params, String authStringEnc) {
+    public static String api(String query, String method, JSONObject params, String authStringEnc) {
 
         try {
 

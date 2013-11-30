@@ -13,14 +13,11 @@ public class LauncherActivity extends Activity {
         Session session = Session.getInstance();
         Intent intent;
 
-        intent = new Intent(this, DemoActivity.class);
-
-        /*
         if (session.username != null && session.password != null) {
             intent = new Intent(this, MainActivity.class);
         } else {
             intent = new Intent(this, LoginActivity.class);
-        }*/
+        }
 
         startActivity(intent);
         finish();

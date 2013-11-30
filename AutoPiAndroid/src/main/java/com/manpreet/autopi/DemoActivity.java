@@ -7,6 +7,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +44,7 @@ public class DemoActivity extends Activity {
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCM Demo";
+    static final String TAG = "AutoPi GCM";
 
     TextView mDisplay;
     GoogleCloudMessaging gcm;
@@ -66,7 +67,9 @@ public class DemoActivity extends Activity {
             regid = getRegistrationId(context);
 
             if (regid.isEmpty()) {
-                registerInBackground();
+                new registerInBackground().execute();
+            } else {
+                onRegisterProcessComplete();
             }
 
         } else {
@@ -166,14 +169,20 @@ public class DemoActivity extends Activity {
         return registrationId;
     }
 
+    public void onRegisterProcessComplete() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     /**
      * Registers the application with GCM servers asynchronously.
      * <p>
      * Stores the registration ID and the app versionCode in the application's
      * shared preferences.
      */
-    private void registerInBackground() {
-        new AsyncTask<Void, Void, String>() {
+    private class registerInBackground extends AsyncTask<Void, Void, String> {
+
             @Override
             protected String doInBackground(Void... params) {
                 String msg;
@@ -206,8 +215,14 @@ public class DemoActivity extends Activity {
             @Override
             protected void onPostExecute(String msg) {
                 mDisplay.append("RESULT MSG"+msg + "\n");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onRegisterProcessComplete();
+                    }
+                });
             }
-        }.execute(null, null, null);
     }
 
     // Send an upstream message.

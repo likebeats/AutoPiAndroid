@@ -27,21 +27,23 @@ public class MainActivity extends Activity {
         Session session = Session.getInstance();
         user = session.currentUser;
 
-        final Light light = user.lights.get(0);
+        if (user.lights.size() > 0) {
+            final Light light = user.lights.get(0);
 
-        TextView titleLabel = (TextView)findViewById(R.id.titleLabel);
-        titleLabel.setText("Welcome, "+session.currentUser.username);
+            TextView titleLabel = (TextView)findViewById(R.id.titleLabel);
+            titleLabel.setText("Welcome, "+session.currentUser.username);
 
-        lightSwitch = (Switch)findViewById(R.id.lightSwitch);
-        lightSwitch.setChecked(light.status);
-        lightSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            lightSwitch = (Switch)findViewById(R.id.lightSwitch);
+            lightSwitch.setChecked(light.status);
+            lightSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
-                new PerformChangeLightStatusTask().execute(String.valueOf(light.id), String.valueOf(isChecked));
-            }
+                @Override
+                public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
+                    new PerformChangeLightStatusTask().execute(String.valueOf(light.id), String.valueOf(isChecked));
+                }
 
-        });
+            });
+        }
 
     }
 
