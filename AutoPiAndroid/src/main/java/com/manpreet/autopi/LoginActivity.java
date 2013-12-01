@@ -43,6 +43,7 @@ public class LoginActivity extends Activity {
     Context context;
 
     String regid;
+    static LoginActivity la;
 
     private View mLoginFormView;
     private View mLoginStatusView;
@@ -58,30 +59,44 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         context = getApplicationContext();
+        la = this;
 
         mLoginFormView = findViewById(R.id.login_form);
         mLoginStatusView = findViewById(R.id.login_status);
 
-        loginBtn = (Button)findViewById(R.id.sign_in_button);
-        usernameTextView = (EditText)findViewById(R.id.username);
-        passwordTextView = (EditText)findViewById(R.id.password);
+        mLoginFormView.setVisibility(View.GONE);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Session session = Session.getInstance();
 
-                System.out.println("---------- BUTTON CLICKED --------------");
-
-                username = usernameTextView.getText().toString();
-                password = passwordTextView.getText().toString();
-
-                showProgress(true);
-                if (toast != null) toast.cancel();
-                new PerformGetAllUsersTask().execute(username, password);
+        if (session.checkSession()) {
+            if (session.currentUser == null) {
+                new PerformGetAllUsersTask().execute(session.username, session.password);
+            } else {
+                checkGCMRegister();
             }
-        });
+        } else {
+            mLoginFormView.setVisibility(View.VISIBLE);
+
+            loginBtn = (Button)findViewById(R.id.sign_in_button);
+            usernameTextView = (EditText)findViewById(R.id.username);
+            passwordTextView = (EditText)findViewById(R.id.password);
+
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    System.out.println("---------- BUTTON CLICKED --------------");
+
+                    username = usernameTextView.getText().toString();
+                    password = passwordTextView.getText().toString();
+
+                    showProgress(true);
+                    if (toast != null) toast.cancel();
+                    new PerformGetAllUsersTask().execute(username, password);
+                }
+            });
+        }
     }
 
     /**
@@ -125,20 +140,8 @@ public class LoginActivity extends Activity {
             session.password = password;
             session.currentUser = user;
 
-            // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
-            if (checkPlayServices()) {
-                gcm = GoogleCloudMessaging.getInstance(this);
-                regid = getRegistrationId(context);
-
-                if (regid.isEmpty()) {
-                    new registerInBackground().execute();
-                } else {
-                    onRegisterProcessComplete();
-                }
-
-            } else {
-                Log.i(TAG, "No valid Google Play Services APK found.");
-            }
+            session.saveSession();
+            checkGCMRegister();
 
         } else {
 
@@ -150,6 +153,23 @@ public class LoginActivity extends Activity {
             toast.show();
         }
 
+    }
+
+    public void checkGCMRegister() {
+        // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
+        if (checkPlayServices()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            regid = getRegistrationId(context);
+
+            if (regid.isEmpty()) {
+                new registerInBackground().execute();
+            } else {
+                onRegisterProcessComplete();
+            }
+
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
     }
 
     public void onRegisterProcessComplete() {
@@ -316,7 +336,7 @@ public class LoginActivity extends Activity {
     private SharedPreferences getGcmPreferences(Context context) {
         // This sample app persists the registration ID in shared preferences, but
         // how you store the regID in your app is up to you.
-        return getSharedPreferences(DemoActivity.class.getSimpleName(),
+        return getSharedPreferences(LoginActivity.class.getSimpleName(),
                 Context.MODE_PRIVATE);
     }
     /**
@@ -330,7 +350,7 @@ public class LoginActivity extends Activity {
         try {
             JSONObject params = new JSONObject();
             params.put("registration_id", regid);
-            String result = BaseStore.api("/device/gcm/?format=json", "POST", params, Session.getInstance().authString);
+            //String result = BaseStore.api("/device/gcm/?format=json", "POST", params, Session.getInstance().authString);
         } catch (JSONException e) {
             System.out.println(e);
         }

@@ -40,10 +40,6 @@
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name="com.manpreet.autopi.DemoActivity"
-            android:label="@string/title_activity_demo" >
-        </activity>
-        <activity
             android:name="com.manpreet.autopi.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>

@@ -13,6 +13,8 @@ public class User {
     public Boolean is_superuser;
     public String last_login;
     public ArrayList<Light> lights;
+    public ArrayList<Blind> blinds;
+    public ArrayList<Entrance> entrance;
     public String password;
     public ArrayList<RaspberryPi> raspberry_pi;
     public String resource_uri;

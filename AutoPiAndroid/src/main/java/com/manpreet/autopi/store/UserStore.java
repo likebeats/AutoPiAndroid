@@ -62,4 +62,28 @@ public class UserStore extends BaseStore {
         return null;
     }
 
+    public static String setBlindStatus(int blindId, boolean status) {
+
+        try {
+            JSONObject params = new JSONObject();
+            params.put("status", status);
+            return api("/blinds/"+blindId+"/?format=json", "PUT", params, Session.getInstance().authString);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static String setEntranceStatus(int entranceId, boolean status) {
+
+        try {
+            JSONObject params = new JSONObject();
+            params.put("alarm", status);
+            return api("/entrance/"+entranceId+"/?format=json", "PUT", params, Session.getInstance().authString);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 }
