@@ -3,6 +3,8 @@ package com.manpreet.autopi;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,8 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import com.manpreet.autopi.model.Blind;
@@ -149,10 +154,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class LightsFragment extends Fragment {
 
+        public LightsFragment() {
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.fragment_lights, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_lights, null, false);
 
             LinearLayout linearLayout1 = (LinearLayout)rootView.findViewById(R.id.linearLayout1);
             for (final Light light : user.lights) {
@@ -165,6 +173,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                 lightSwitch.setLayoutParams(params);
                 lightSwitch.setText(light.label);
+                lightSwitch.setTextColor(Color.WHITE);
                 lightSwitch.setChecked(light.status);
                 lightSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
@@ -207,10 +216,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class DoorsFragment extends Fragment {
 
+        public DoorsFragment() {
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.fragment_doors, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_doors, null, false);
 
             LinearLayout linearLayout1 = (LinearLayout)rootView.findViewById(R.id.linearLayout1);
             for (final Entrance entrance : user.entrance) {
@@ -224,6 +236,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                     doorSwitch.setLayoutParams(params);
                     doorSwitch.setText(entrance.label);
+                    doorSwitch.setTextColor(Color.WHITE);
                     doorSwitch.setChecked(entrance.alarm);
                     doorSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
@@ -267,10 +280,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class BlindsFragment extends Fragment {
 
+        public BlindsFragment() {
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.fragment_blinds, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_blinds, null, false);
 
             LinearLayout linearLayout1 = (LinearLayout)rootView.findViewById(R.id.linearLayout1);
             for (final Blind blind : user.blinds) {
@@ -283,6 +299,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                 blindSwitch.setLayoutParams(params);
                 blindSwitch.setText(blind.label);
+                blindSwitch.setTextColor(Color.WHITE);
                 blindSwitch.setChecked(blind.status);
                 blindSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
@@ -325,10 +342,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class WindowsFragment extends Fragment {
 
+        public WindowsFragment() {
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.fragment_windows, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_windows, null, false);
 
             LinearLayout linearLayout1 = (LinearLayout)rootView.findViewById(R.id.linearLayout1);
             for (final Entrance entrance : user.entrance) {
@@ -342,6 +362,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                     windowSwitch.setLayoutParams(params);
                     windowSwitch.setText(entrance.label);
+                    windowSwitch.setTextColor(Color.WHITE);
                     windowSwitch.setChecked(entrance.alarm);
                     windowSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 

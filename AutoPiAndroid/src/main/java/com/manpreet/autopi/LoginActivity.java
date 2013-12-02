@@ -64,6 +64,9 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mLoginStatusView = findViewById(R.id.login_status);
+        loginBtn = (Button)findViewById(R.id.sign_in_button);
+        usernameTextView = (EditText)findViewById(R.id.username);
+        passwordTextView = (EditText)findViewById(R.id.password);
 
         mLoginFormView.setVisibility(View.GONE);
 
@@ -77,10 +80,6 @@ public class LoginActivity extends Activity {
             }
         } else {
             mLoginFormView.setVisibility(View.VISIBLE);
-
-            loginBtn = (Button)findViewById(R.id.sign_in_button);
-            usernameTextView = (EditText)findViewById(R.id.username);
-            passwordTextView = (EditText)findViewById(R.id.password);
 
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -350,7 +349,7 @@ public class LoginActivity extends Activity {
         try {
             JSONObject params = new JSONObject();
             params.put("registration_id", regid);
-            //String result = BaseStore.api("/device/gcm/?format=json", "POST", params, Session.getInstance().authString);
+            String result = BaseStore.api("/device/gcm/?format=json", "POST", params, Session.getInstance().authString);
         } catch (JSONException e) {
             System.out.println(e);
         }

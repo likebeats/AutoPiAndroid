@@ -28,7 +28,7 @@ public class Session {
     }
 
     protected boolean checkSession() {
-        if (authString != null) return true;
+        if (authString != null && username != null && password != null) return true;
 
         SharedPreferences preferences = LoginActivity.la.getApplicationContext().getSharedPreferences("AutoPiSession", Context.MODE_PRIVATE);
         String u = preferences.getString("username", null);
