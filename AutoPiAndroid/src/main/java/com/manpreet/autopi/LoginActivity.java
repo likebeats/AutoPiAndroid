@@ -53,7 +53,6 @@ public class LoginActivity extends Activity {
     private Toast toast;
 
     private String username;
-    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
