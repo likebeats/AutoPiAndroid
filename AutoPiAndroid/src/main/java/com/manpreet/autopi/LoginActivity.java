@@ -54,6 +54,7 @@ public class LoginActivity extends Activity {
 
     private String username;
     private String password;
+    // test commit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
